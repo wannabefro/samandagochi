@@ -1,6 +1,3 @@
-// make it rain behind other objects
-
-
 
 function init(){
   var canvas = document.getElementById('canvas');
@@ -11,8 +8,6 @@ function init(){
   height = canvas.height;
   raindrops = [];
 
-
-
   var sun = new createjs.Bitmap('assets/sun_moon/sun_moon-01.svg');
   var moon = new createjs.Bitmap('assets/sun_moon/sun_moon-02.svg');
   var sky1 = new createjs.Bitmap('assets/sky/sky.png');
@@ -22,6 +17,9 @@ function init(){
   cloud1 = new createjs.Bitmap('assets/clouds/clouds1.png');
   cloud2 = new createjs.Bitmap('assets/clouds/clouds2.png');
   cloud3 = new createjs.Bitmap('assets/clouds/clouds3.png');
+  eggUnHatched = new createjs.Bitmap('assets/egg/egg1.png');
+  eggMedHatched = new createjs.Bitmap('assets/egg/egg2.png');
+  eggOpen = new createjs.Bitmap('assets/egg/egg3.png');
 
   sun.x = 300;
   sun.y = 450;
@@ -34,6 +32,28 @@ function init(){
   cloud3.x = 400;
   cloud3.y = 75;
 
+  eggUnHatched.x = centerX - 150;
+  eggUnHatched.y = 400;
+  eggUnHatched.alpha = 1;
+
+  eggUnHatched.addEventListener("click", function(e){
+    eggUnHatched.alpha = 0;
+    eggMedHatched.alpha = 1;
+  });
+
+  eggMedHatched.addEventListener("click", function(e){
+    eggMedHatched.alpha = 0;
+    eggOpen.alpha = 1;
+  });
+
+  eggMedHatched.x = centerX - 150;
+  eggMedHatched.y = 400;
+  eggMedHatched.alpha = 0;
+
+  eggOpen.x = centerX - 150;
+  eggOpen.y = 400;
+  eggOpen.alpha = 0;
+
   moon.x = 300;
   moon.y = 550;
   moon.regX = -300;
@@ -42,13 +62,14 @@ function init(){
   stage.addChild(sky2);
   stage.addChild(sun);
   stage.addChild(moon);
-  makeItRain();
   stage.addChild(cloud1);
   stage.addChild(cloud2);
   stage.addChild(cloud3);
   stage.addChild(background1);
   stage.addChild(background2);
-
+  stage.addChild(eggUnHatched);
+  stage.addChild(eggMedHatched);
+  stage.addChild(eggOpen);
 
   createjs.Ticker.setInterval(25);
   createjs.Ticker.addListener(function(){
@@ -78,22 +99,14 @@ function init(){
       background2.alpha -= 1/speedOfRotation;
       sky2.alpha  -= 1/speedOfRotation;}
     }
-    rainfall();
     stage.update();
   });
 
 
 }
 
-function makeItRain(){
-  raining = setInterval(drawRain, 5);
-  if (raindrops.length > 120){
-    clearInterval(raining);
-  }
-
-}
-
 function drawRain(){
+  for (var i = 0; i < 150; i++){
     rain = new createjs.Bitmap('assets/extras/raindrop.png');
     rain.scaleX = 0.1;
     rain.scaleY = 0.1;
@@ -101,6 +114,7 @@ function drawRain(){
     cloudchoice(rain);
     raindrops.push(rain);
     stage.addChild(rain);
+  }
 }
 
 function rainfall(){
