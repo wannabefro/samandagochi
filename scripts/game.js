@@ -7,7 +7,10 @@ function init(){
   width = canvas.width;
   height = canvas.height;
   raindrops = [];
+  day_number = 1;
+  current_day = day_number;
 
+  var day = new createjs.Text('Day ' + day_number, "bold 24px Helvetica", "#604d55");
   var sun = new createjs.Bitmap('assets/sun_moon/sun_moon-01.svg');
   var moon = new createjs.Bitmap('assets/sun_moon/sun_moon-02.svg');
   var sky1 = new createjs.Bitmap('assets/sky/sky.png');
@@ -26,6 +29,9 @@ function init(){
   howManyWobbles = 0;
   wobble = false;
   currentEgg = '';
+
+  day.x = 480;
+  day.y = 20;
 
   sun.x = 300;
   sun.y = 450;
@@ -98,10 +104,20 @@ function init(){
   stage.addChild(eggGetHatched);
   stage.addChild(eggMedHatched);
   stage.addChild(eggOpen);
+  stage.addChild(day);
 
   createjs.Ticker.setInterval(25);
   createjs.Ticker.addListener(function(){
-    var rotation = 0.5;
+    if (current_day != day_number){
+      stage.removeChild(day);
+      day = new createjs.Text('Day ' + day_number, "bold 24px Helvetica", "#604d55");
+      day.x = 480;
+      day.y = 20;
+      stage.addChild(day);
+      current_day = day_number;
+
+    }
+    var rotation = 5;
     var speedOfRotation = 50 / rotation;
     sun.rotation += rotation;
     moon.rotation += rotation;
@@ -132,6 +148,9 @@ function init(){
     }
     if (cloud3.x > width){
       cloud3.x = -400;
+    }
+    if (sun.rotation % 360 === 0){
+      day_number++;
     }
     if ((sun.rotation % 360 >= 100) && (sun.rotation % 360 <= 280) ){
       if (background2.alpha < 1){
