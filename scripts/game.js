@@ -18,8 +18,14 @@ function init(){
   cloud2 = new createjs.Bitmap('assets/clouds/clouds2.png');
   cloud3 = new createjs.Bitmap('assets/clouds/clouds3.png');
   eggUnHatched = new createjs.Bitmap('assets/egg/egg1.png');
+  eggGetHatched = new createjs.Bitmap('assets/egg/egg1pt5.png');
   eggMedHatched = new createjs.Bitmap('assets/egg/egg2.png');
   eggOpen = new createjs.Bitmap('assets/egg/egg3.png');
+  eggClick = 0;
+  hatched = false;
+  howManyWobbles = 0;
+  wobble = false;
+  currentEgg = '';
 
   sun.x = 300;
   sun.y = 450;
@@ -33,25 +39,46 @@ function init(){
   cloud3.y = 75;
 
   eggUnHatched.x = centerX - 150;
-  eggUnHatched.y = 400;
+  eggUnHatched.y = 350;
   eggUnHatched.alpha = 1;
 
   eggUnHatched.addEventListener("click", function(e){
+    eggClick += 1;
     eggUnHatched.alpha = 0;
+    eggGetHatched.alpha = 1;
+  });
+
+  eggGetHatched.x = centerX - 150;
+  eggGetHatched.y = 350;
+  eggGetHatched.alpha = 0;
+
+  eggGetHatched.addEventListener("click", function(e){
+    eggClick += 1;
+    if (eggClick === 4){
+    eggGetHatched.alpha = 0;
     eggMedHatched.alpha = 1;
+  } else {
+    wobbleEgg(eggGetHatched);
+  }
   });
 
   eggMedHatched.addEventListener("click", function(e){
+    eggClick += 1;
+    if (eggClick === 7){
     eggMedHatched.alpha = 0;
     eggOpen.alpha = 1;
+    hatched = true;
+  } else {
+    wobbleEgg(eggMedHatched);
+  }
   });
 
   eggMedHatched.x = centerX - 150;
-  eggMedHatched.y = 400;
+  eggMedHatched.y = 350;
   eggMedHatched.alpha = 0;
 
   eggOpen.x = centerX - 150;
-  eggOpen.y = 400;
+  eggOpen.y = 350;
   eggOpen.alpha = 0;
 
   moon.x = 300;
@@ -68,6 +95,7 @@ function init(){
   stage.addChild(background1);
   stage.addChild(background2);
   stage.addChild(eggUnHatched);
+  stage.addChild(eggGetHatched);
   stage.addChild(eggMedHatched);
   stage.addChild(eggOpen);
 
@@ -80,6 +108,22 @@ function init(){
     cloud1.x += rotation * 2;
     cloud2.x -= rotation / 2;
     cloud3.x += rotation;
+    if (howManyWobbles === 16){
+      wobble = false;
+      currentEgg.rotation = 0;
+    }
+    else if ((howManyWobbles % 4 === 0) && (wobble === true)){
+      currentEgg.rotation += 5;
+      howManyWobbles ++;
+    } else if ((howManyWobbles % 4 === 2) && (wobble === true)) {
+      currentEgg.rotation -= 5;
+      howManyWobbles ++;
+    } else {
+      howManyWobbles ++;
+    }
+    if (hatched === true){
+      eggOpen.alpha -= 0.01;
+    }
     if (cloud1.x > width) {
       cloud1.x = -700;
     }
@@ -101,6 +145,12 @@ function init(){
     }
     stage.update();
   });
+
+  function wobbleEgg(egg){
+    howManyWobbles = 0;
+    wobble = true;
+    currentEgg = egg;
+  }
 
 
 }
