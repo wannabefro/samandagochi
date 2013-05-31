@@ -1,3 +1,58 @@
-#canvas{
-  //background-color: blue;
+html {
+  font-family: helvetica;
+  color: #604d55;
+}
+
+button {
+  font-family: helvetica;
+  font-size: 1.25em;
+}
+
+canvas {
+  display: block;
+  margin-top: 3em;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+#game {
+  display: block;
+  margin-top: 3em;
+  margin-right: auto;
+  margin-left: auto;
+  position: relative;
+  width: 600px;
+  height: 600px;
+}
+
+#new_game {
+  position: absolute;
+  top: 0;
+  background-color: white;
+  height: 200px;
+  width: 300px;
+  margin-top: 30%;
+  margin-right: 25%;
+  margin-left: 25%;
+  padding: 1.75em 2em;
+  box-sizing: border-box;
+  border-radius: 15px;
+  border: 5px solid #604d55;
+}
+
+#new_game h1 {
+  font-size: 1.75em;
+}
+
+#start_game {
+  background-color: #604d55;
+  border-radius: 8px;
+  color: white;
+  padding: 10px 30px;
+  text-align: center;
+  border: 0px solid;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+
 }
