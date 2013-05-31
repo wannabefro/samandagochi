@@ -7,11 +7,17 @@ function init(){
   width = canvas.width;
   height = canvas.height;
   raindrops = [];
+  day_number = 1;
+  current_day = day_number;
 
+<<<<<<< HEAD
   var queue = new createjs.LoadQueue(false);
 
 
 
+=======
+  var day = new createjs.Text('Day ' + day_number, "bold 24px Helvetica", "#604d55");
+>>>>>>> 3106c62a880e6c32d3a3b22b9ec0d0caff9abb02
   var sun = new createjs.Bitmap('assets/sun_moon/sun_moon-01.svg');
   var moon = new createjs.Bitmap('assets/sun_moon/sun_moon-02.svg');
   var sky1 = new createjs.Bitmap('assets/sky/sky.png');
@@ -21,9 +27,30 @@ function init(){
   cloud1 = new createjs.Bitmap('assets/clouds/clouds1.png');
   cloud2 = new createjs.Bitmap('assets/clouds/clouds2.png');
   cloud3 = new createjs.Bitmap('assets/clouds/clouds3.png');
+<<<<<<< HEAD
   eggUnhatched = new createjs.Bitmap('assets/egg/egg1.png');
   eggMedHatched = new createjs.Bitmap('assets/egg/egg2.png');
   eggOpen = new createjs.Bitmap('assets/egg/egg3.png');
+=======
+  eggUnHatched = new createjs.Bitmap('assets/egg/egg1.png');
+  eggGetHatched = new createjs.Bitmap('assets/egg/egg1pt5.png');
+  eggMedHatched = new createjs.Bitmap('assets/egg/egg2.png');
+  eggOpen = new createjs.Bitmap('assets/egg/egg3.png');
+  var arrow = new createjs.Bitmap('assets/extras/arrow.png');
+  eggClick = 0;
+  hatched = false;
+  howManyWobbles = 0;
+  wobble = false;
+  currentEgg = '';
+
+  day.x = 480;
+  day.y = 20;
+
+  arrow.scaleX = 0.25;
+  arrow.scaleY = 0.25;
+  arrow.x = centerX - 60;
+  arrow.y = 200;
+>>>>>>> 3106c62a880e6c32d3a3b22b9ec0d0caff9abb02
 
   sun.x = 300;
   sun.y = 450;
@@ -36,6 +63,7 @@ function init(){
   cloud3.x = 400;
   cloud3.y = 75;
 
+<<<<<<< HEAD
   eggUnhatched.x = centerX - 150;
   eggUnhatched.y = 400;
   eggUnhatched.alpha = 0;
@@ -50,6 +78,50 @@ function init(){
 
   eggOpen.x = centerX - 150;
   eggOpen.y = 400;
+=======
+  eggUnHatched.x = centerX - 150;
+  eggUnHatched.y = 350;
+  eggUnHatched.alpha = 1;
+
+  eggUnHatched.addEventListener("click", function(e){
+    eggClick += 1;
+    stage.removeChild(arrow);
+    eggUnHatched.alpha = 0;
+    eggGetHatched.alpha = 1;
+  });
+
+  eggGetHatched.x = centerX - 150;
+  eggGetHatched.y = 350;
+  eggGetHatched.alpha = 0;
+
+  eggGetHatched.addEventListener("click", function(e){
+    eggClick += 1;
+    if (eggClick === 4){
+    eggGetHatched.alpha = 0;
+    eggMedHatched.alpha = 1;
+  } else {
+    wobbleEgg(eggGetHatched);
+  }
+  });
+
+  eggMedHatched.addEventListener("click", function(e){
+    eggClick += 1;
+    if (eggClick === 7){
+    eggMedHatched.alpha = 0;
+    eggOpen.alpha = 1;
+    hatched = true;
+  } else {
+    wobbleEgg(eggMedHatched);
+  }
+  });
+
+  eggMedHatched.x = centerX - 150;
+  eggMedHatched.y = 350;
+  eggMedHatched.alpha = 0;
+
+  eggOpen.x = centerX - 150;
+  eggOpen.y = 350;
+>>>>>>> 3106c62a880e6c32d3a3b22b9ec0d0caff9abb02
   eggOpen.alpha = 0;
 
   moon.x = 300;
@@ -65,12 +137,31 @@ function init(){
   stage.addChild(cloud3);
   stage.addChild(background1);
   stage.addChild(background2);
+<<<<<<< HEAD
   stage.addChild(eggUnhatched);
   stage.addChild(eggMedHatched);
   stage.addChild(eggOpen);
+=======
+  stage.addChild(eggUnHatched);
+  stage.addChild(eggGetHatched);
+  stage.addChild(eggMedHatched);
+  stage.addChild(eggOpen);
+  stage.addChild(day);
+  stage.addChild(arrow);
+>>>>>>> 3106c62a880e6c32d3a3b22b9ec0d0caff9abb02
 
   createjs.Ticker.setInterval(25);
+  createjs.Ticker.setPaused(true);
   createjs.Ticker.addListener(function(){
+    if (current_day != day_number){
+      stage.removeChild(day);
+      day = new createjs.Text('Day ' + day_number, "bold 24px Helvetica", "#604d55");
+      day.x = 480;
+      day.y = 20;
+      stage.addChild(day);
+      current_day = day_number;
+
+    }
     var rotation = 0.5;
     var speedOfRotation = 50 / rotation;
     sun.rotation += rotation;
@@ -78,6 +169,22 @@ function init(){
     cloud1.x += rotation * 2;
     cloud2.x -= rotation / 2;
     cloud3.x += rotation;
+    if (howManyWobbles === 16){
+      wobble = false;
+      currentEgg.rotation = 0;
+    }
+    else if ((howManyWobbles % 4 === 0) && (wobble === true)){
+      currentEgg.rotation += 5;
+      howManyWobbles ++;
+    } else if ((howManyWobbles % 4 === 2) && (wobble === true)) {
+      currentEgg.rotation -= 5;
+      howManyWobbles ++;
+    } else {
+      howManyWobbles ++;
+    }
+    if (hatched === true){
+      eggOpen.alpha -= 0.01;
+    }
     if (cloud1.x > width) {
       cloud1.x = -700;
     }
@@ -86,6 +193,9 @@ function init(){
     }
     if (cloud3.x > width){
       cloud3.x = -400;
+    }
+    if (sun.rotation % 360 === 320){
+      day_number++;
     }
     if ((sun.rotation % 360 >= 100) && (sun.rotation % 360 <= 280) ){
       if (background2.alpha < 1){
@@ -100,6 +210,15 @@ function init(){
     stage.update();
   });
 
+<<<<<<< HEAD
+=======
+  function wobbleEgg(egg){
+    howManyWobbles = 0;
+    wobble = true;
+    currentEgg = egg;
+  }
+
+>>>>>>> 3106c62a880e6c32d3a3b22b9ec0d0caff9abb02
 
 }
 
@@ -142,6 +261,14 @@ function randomNumber(){
   number = Math.floor(Math.random()*2);
 }
 
+function startGame(){
+  $('#start_game').click(function(){
+    createjs.Ticker.setPaused(false);
+    $('#new_game').remove();
+
+  });
+}
+
 function start(){
   $('#start').click(function(){
     createjs.Ticker.setPaused(false);
@@ -153,5 +280,8 @@ function stop(){
     createjs.Ticker.setPaused(true);
   });
 }
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 3106c62a880e6c32d3a3b22b9ec0d0caff9abb02
