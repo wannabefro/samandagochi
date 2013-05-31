@@ -115,6 +115,7 @@ function init(){
   stage.addChild(arrow);
 
   createjs.Ticker.setInterval(25);
+  createjs.Ticker.setPaused(true);
   createjs.Ticker.addListener(function(){
     if (current_day != day_number){
       stage.removeChild(day);
@@ -219,6 +220,14 @@ function cloudchoice(rain){
 
 function randomNumber(){
   number = Math.floor(Math.random()*2);
+}
+
+function startGame(){
+  $('#start_game').click(function(){
+    createjs.Ticker.setPaused(false);
+    $('#new_game').remove();
+
+  });
 }
 
 function start(){
