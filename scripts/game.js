@@ -125,7 +125,7 @@ function init(){
       current_day = day_number;
 
     }
-    var rotation = 5;
+    var rotation = 0.5;
     var speedOfRotation = 50 / rotation;
     sun.rotation += rotation;
     moon.rotation += rotation;
