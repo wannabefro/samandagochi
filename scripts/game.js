@@ -24,6 +24,7 @@ function init(){
   eggGetHatched = new createjs.Bitmap('assets/egg/egg1pt5.png');
   eggMedHatched = new createjs.Bitmap('assets/egg/egg2.png');
   eggOpen = new createjs.Bitmap('assets/egg/egg3.png');
+  var arrow = new createjs.Bitmap('assets/extras/arrow.png');
   eggClick = 0;
   hatched = false;
   howManyWobbles = 0;
@@ -32,6 +33,11 @@ function init(){
 
   day.x = 480;
   day.y = 20;
+
+  arrow.scaleX = 0.25;
+  arrow.scaleY = 0.25;
+  arrow.x = centerX - 60;
+  arrow.y = 200;
 
   sun.x = 300;
   sun.y = 450;
@@ -50,6 +56,7 @@ function init(){
 
   eggUnHatched.addEventListener("click", function(e){
     eggClick += 1;
+    stage.removeChild(arrow);
     eggUnHatched.alpha = 0;
     eggGetHatched.alpha = 1;
   });
@@ -105,6 +112,7 @@ function init(){
   stage.addChild(eggMedHatched);
   stage.addChild(eggOpen);
   stage.addChild(day);
+  stage.addChild(arrow);
 
   createjs.Ticker.setInterval(25);
   createjs.Ticker.addListener(function(){
@@ -149,7 +157,7 @@ function init(){
     if (cloud3.x > width){
       cloud3.x = -400;
     }
-    if (sun.rotation % 360 === 0){
+    if (sun.rotation % 360 === 320){
       day_number++;
     }
     if ((sun.rotation % 360 >= 100) && (sun.rotation % 360 <= 280) ){
